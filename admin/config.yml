@@ -1,0 +1,52 @@
+# config.yml
+
+backend:
+  name: git-gateway
+  branch: master # Branch to update (optional; defaults to master)
+media_folder: 'assets/uploads'
+locale: 'tr'
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
+collections:
+  - name: 'blog'
+    label: 'Blog'
+    folder: '_posts/'
+    create: true
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    editor:
+      preview: false
+    fields:
+      - { label: 'Permalink', name: 'permalink', widget: 'hidden', default: ':title:output_ext' }
+      - { label: 'Layout', name: 'layout', widget: 'hidden', default: 'post' }
+      - { label: 'Title', name: 'title', widget: 'string', hint: 'Yazının başlığı. Aynı zamanda Google sıralamasında gözüken başlık da olacaktır. (Maks:60 karakter)' }
+      - { label: 'Description', name: 'description', widget: 'text', hint: 'Yazının kısa açıklaması ve özeti. Aynı zamanda Google sıralamasındaki açıklama da olacaktır.' }
+      - { label: 'Cover Image', name: 'cover', widget: 'image', hint: 'Yazının büyük başlık fotoğrafı. Sosyal medyada paylaşımlarında gözükecek görseldir. (Önerilen boyut: Genişlik*Yükseklik = 1600px * 800px)' }
+      - { label: 'Thumbnail', name: 'thumbnail', widget: 'image', hint: 'Yazıya referans verilirken gözüken küçük fotoğraf.' }
+      - { label: 'Publish Date', name: 'date', widget: 'datetime' }
+
+      - {
+          label: "Yazar",
+          name: "author",
+          widget: "relation",
+          collection: "authors",
+          displayFields: [display_name],
+          searchFields: [display_name],
+          valueField: "name",
+          required: false
+        }
+      - { label: 'Body', name: 'body', widget: 'markdown' }
+
+  - name: "authors"
+    label: "Authors"
+    folder: "_authors/"
+    create: true
+    editor:
+      preview: false
+    fields:
+      - { label: "Layout", name: "layout", widget: "hidden", default: "author" }
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Diplay Name", name: "display_name", widget: "string" }
+      - { label: "Position", name: "position", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown", required: false }
